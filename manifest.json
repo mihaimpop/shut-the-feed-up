@@ -1,6 +1,6 @@
 {
   "name": "Shut The Feed Up",
-  "version": "1",
+  "version": "1.0.1",
   "description": "A productivity extension for Chrome which removes Facebook's News Feed",
   "icons": {
     "16": "icon-16.png",

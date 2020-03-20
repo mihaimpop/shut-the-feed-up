@@ -1,4 +1,25 @@
 this.randomQuote = '';
+const re = /(?:(?:http|https):\/\/)?(?:www.)?facebook.com\//;
+const FB_URL_HTTPS = 'https://www.facebook.com/';
+const FB_URL_HTTP = 'http://www.facebook.com/';
+
+const onMainPage = (url) => url === FB_URL_HTTP || url === FB_URL_HTTPS;
+
+function delay(ms) {
+  return new Promise((resolve) => setTimeout(resolve, ms));
+}
+
+const backgroundColor = window.getComputedStyle(document.body, null)
+  .backgroundColor;
+const whiteTheme = 'rgb(240, 242, 245)';
+const darkTheme = 'rgb(24, 25, 26)';
+const isWhiteTheme = backgroundColor === whiteTheme;
+
+window.onload = function() {
+  if (onMainPage(window.location.href)) {
+    hideNewsFeed(isWhiteTheme);
+  }
+};
 
 function hideNewsFeed(isWhiteTheme) {
   let newsFeed =
@@ -55,23 +76,10 @@ function hideNewsFeed(isWhiteTheme) {
   }
 }
 
-const re = /(?:(?:http|https):\/\/)?(?:www.)?facebook.com\//;
-const onMainPage = (url) => !!re.exec(url);
-
-function delay(ms) {
-  return new Promise((resolve) => setTimeout(resolve, ms));
-}
-
 let observer = new MutationObserver(function(mutations) {
   mutations.forEach(function(mutation) {
     if (onMainPage(window.location.href)) {
       delay(500).then(() => {
-        const backgroundColor = window.getComputedStyle(document.body, null)
-          .backgroundColor;
-        const whiteTheme = 'rgb(240, 242, 245)';
-        const darkTheme = 'rgb(24, 25, 26)';
-        const isWhiteTheme = backgroundColor === whiteTheme;
-
         hideNewsFeed(isWhiteTheme);
       });
     }
@@ -87,5 +95,5 @@ const observerConfig = {
 
 // Node, config
 // In this case we'll listen to all changes to body and child nodes
-const targetNode = document.body;
+const targetNode = document;
 observer.observe(targetNode, observerConfig);
